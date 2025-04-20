@@ -1,42 +1,34 @@
-import time
 import matplotlib.pyplot as plt
 import random
-import statistics
+import math
 
 def bubbleSort(lst):
-    for i in range(len(lst) - 1):  
-        for j in range(0, len(lst) - i - 1):  
+    count = 0
+    for i in range(len(lst) - 1):
+        for j in range(0, len(lst) - i - 1):
+            count+=1
             if lst[j] > lst[j + 1]:  # Correct comparison
                 lst[j], lst[j + 1] = lst[j + 1], lst[j]  # Swap
-    return lst
+    return count
 
-#Hyper-parameters
-size = 200
-repeats = 5
+size = 1000
 
-time_elapsed = []
+count_values = []
 x_values = []
-for i in range(1,size+1):
-    times = []
-    for _ in range(0,repeats):
-        temp_list = [random.randint(1,1000) for _ in range(1,i+1)]
-        start = time.time()
-        bubbleSort(temp_list)
-        end = time.time()
-        times.append(end-start)
-    avg_time = statistics.mean(times)    
-    time_elapsed.append(avg_time)
-    x_values.append(i)
-    
-y_squared = [i**2 for i in range(1,size+1)]
-factor = max(time_elapsed)/max(y_squared)
-y_squared_scaled = [y*factor for y in y_squared]
 
-plt.plot(x_values,time_elapsed,label="Bubble Sort",color="blue")
-plt.plot(x_values,y_squared_scaled,label="y=n^2",color="red")
-plt.title("Quick Sort")
-plt.xlabel("Input Size")
-plt.ylabel("Time Elapsed (seconds) ")
+for i in range(1,size+1):
+    arr = [ random.randint(1,100) for _ in range(1,i+1)]
+    count = bubbleSort(arr)
+    x_values.append(i)
+    count_values.append(count)
+
+n_squared = [n**2 for n in range(1,size+1)]
+
+plt.plot(x_values, count_values, label='Bubble Sort',color='blue')
+plt.plot(x_values, n_squared, label='O(n^2)',color='green')
+plt.xlabel('Array Size')
+plt.ylabel('Number of Comparisons')
+plt.title('Bubble Sort vs. O(n^2)')
 plt.legend()
 plt.grid(True)
 plt.show()

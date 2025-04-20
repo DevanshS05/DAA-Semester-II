@@ -1,65 +1,68 @@
-import random
 import matplotlib.pyplot as plt
-import time
+import random
 import math
-import statistics
 
-def merge_sort(arr):
+# MergeSort with step counting
+steps = 0
+
+def mergesort(arr):
+    global steps
     if len(arr) <= 1:
         return arr
-
-    mid = len(arr) // 2  #Find the middle index
-    left_half = merge_sort(arr[:mid]) #Recursively sort the left half
-    right_half = merge_sort(arr[mid:]) #Recursively sort the right half
-
-    return merge(left_half, right_half)
+    mid = len(arr) // 2
+    left = mergesort(arr[:mid])
+    right = mergesort(arr[mid:])
+    return merge(left, right)
 
 def merge(left, right):
-    sorted_list = []
+    global steps
+    merged = []
     i = j = 0
-
-    # Merge two sorted lists
     while i < len(left) and j < len(right):
-        if left[i] < right[j]:  
-            sorted_list.append(left[i])
+        steps += 1
+        if left[i] < right[j]:
+            merged.append(left[i])
             i += 1
         else:
-            sorted_list.append(right[j])
+            merged.append(right[j])
             j += 1
+    merged.extend(left[i:])
+    merged.extend(right[j:])
+    return merged
 
-    # Append any remaining elements from both lists
-    sorted_list.extend(left[i:])
-    sorted_list.extend(right[j:])
+def run_mergesort_with_steps(n):
+    global steps
+    steps = 0
+    arr = random.sample(range(n * 2), n)
+    mergesort(arr)
+    return steps
 
-    return sorted_list
+# Input sizes
+sizes = list(range(1, 1001))
+ms_steps = [run_mergesort_with_steps(n) for n in sizes]
+nlogn = [n * math.log2(n) for n in sizes]
+n_squared = [n ** 2 for n in sizes]
 
-#Hyper-parameters
-size = 1000
-repeats = 5
-
-time_elapsed = []
-x_values = []
-for i in range(1,size+1):
-    times = []
-    for _ in range(0,repeats):
-        temp_list = [random.randint(1,1000) for _ in range(1,i+1)]
-        start = time.time()
-        merge_sort(temp_list)
-        end = time.time()
-        times.append(end-start)
-    avg_time = statistics.mean(times)    
-    time_elapsed.append(avg_time)
-    x_values.append(i)
-    
-nlogn = [n*math.log2(n) for n in x_values]
-factor = max(time_elapsed)/max(nlogn)
-nlogn_scaled = [y*factor for y in nlogn]
-
-plt.plot(x_values,time_elapsed,label="Merge Sort",color="blue")
-plt.plot(x_values,nlogn_scaled,label="y=nlogn",color="red")
-plt.title("Merge Sort")
-plt.xlabel("Input Size")
-plt.ylabel("Time Elapsed (seconds) ")
+# Plot 1: MergeSort Steps vs n log n
+plt.figure(figsize=(10, 5))
+plt.plot(sizes, ms_steps, label='MergeSort Steps (comparisons)', color='purple')
+plt.plot(sizes, nlogn, label='n log n', color='red', linestyle='--')
+plt.xlabel('Input Size (n)')
+plt.ylabel('Number of Steps')
+plt.title('MergeSort Steps vs n log n')
 plt.legend()
 plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Plot 2: MergeSort Steps vs n^2
+plt.figure(figsize=(10, 5))
+plt.plot(sizes, ms_steps, label='MergeSort Steps (comparisons)', color='purple')
+plt.plot(sizes, n_squared, label='n^2 (Worst Case)', color='green', linestyle=':')
+plt.xlabel('Input Size (n)')
+plt.ylabel('Number of Steps')
+plt.title('MergeSort Steps vs n^2')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
 plt.show()
