@@ -16,8 +16,6 @@ def bfs(graph, start_vertex):
                 queue.append(w)
                 visited[w] = 1
 
-# Driver Code
-
 #Undirected graph implemented using adjacency list
 graph = {
     'A': ['B', 'C'],

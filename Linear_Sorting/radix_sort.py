@@ -21,11 +21,10 @@ def counting_sort(arr, exp):
         count[index % 10] -= 1
         i -= 1
 
-    # Copy the output array to arr[], so that arr[] contains sorted numbers
+    # Copy the output array
     for i in range(n):
         arr[i] = output[i]
 
-# Function to perform Radix Sort
 def radix_sort(arr):
     # Find the maximum number to know the number of digits
     max_num = max(arr)
@@ -36,7 +35,6 @@ def radix_sort(arr):
         counting_sort(arr, exp)
         exp *= 10
 
-# Example usage
 arr = [170, 45, 75, 90, 802, 24, 2, 66]
 radix_sort(arr)
 print("Sorted array:", arr)

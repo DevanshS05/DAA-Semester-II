@@ -23,7 +23,7 @@ def kruskal(n, edge_list):
 
     # Insert edges into heap as (cost, u, v)
     for (u, v, cost) in edge_list:
-        min_heap.insert((cost, u, v))
+        min_heap.insert((cost, u, v)) #Keeping cost first to allow comparison of tuples
 
     count = 0
     while count < n - 1 and min_heap.heap:
