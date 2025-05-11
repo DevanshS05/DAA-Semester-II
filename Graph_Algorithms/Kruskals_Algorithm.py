@@ -1,105 +1,59 @@
-class MinHeap:
-    def __init__(self):
-        self.heap = []
+from minHeap import MinHeap
 
-    def heapify(self, i):
-        smallest = i
-        left = 2 * i + 1
-        right = 2 * i + 2
-        n = len(self.heap)
-
-        if left < n and self.heap[left][0] < self.heap[smallest][0]:
-            smallest = left
-        if right < n and self.heap[right][0] < self.heap[smallest][0]:
-            smallest = right
-
-        if smallest != i:
-            self.heap[i], self.heap[smallest] = self.heap[smallest], self.heap[i]
-            self.heapify(smallest)
-
-    def build_min_heap(self, arr):
-        self.heap = arr
-        n = len(self.heap)
-        for i in range(n // 2 - 1, -1, -1):
-            self.heapify(i)
-
-    def insert(self, weight, vertex_pair):
-        self.heap.append((weight, vertex_pair))
-        i = len(self.heap) - 1
-        while i > 0:
-            parent = (i - 1) // 2
-            if self.heap[i][0] < self.heap[parent][0]:
-                self.heap[i], self.heap[parent] = self.heap[parent], self.heap[i]
-                i = parent
-            else:
-                break
-
-    def extract_min(self):
-        if not self.heap:
-            return None
-        if len(self.heap) == 1:
-            return self.heap.pop()
-        root = self.heap[0]
-        self.heap[0] = self.heap.pop()
-        self.heapify(0)
-        return root
-
-    def is_empty(self):
-        return len(self.heap) == 0
-
-
-# Disjoint Set (Union-Find)
 class DisjointSet:
     def __init__(self, n):
-        self.parent = list(range(n))
+        self.parent = [i for i in range(n)]
 
     def find(self, u):
         if self.parent[u] != u:
-            self.parent[u] = self.find(self.parent[u])
+            self.parent[u] = self.find(self.parent[u]) #Path compression for faster root finding in future
         return self.parent[u]
 
     def union(self, u, v):
-        pu = self.find(u)
-        pv = self.find(v)
-        if pu != pv:
-            self.parent[pu] = pv
-            return True
-        return False
+        u_root = self.find(u)
+        v_root = self.find(v)
+        if u_root != v_root:
+            self.parent[v_root] = u_root
 
+def kruskal(n, edge_list):
+    min_heap = MinHeap()
+    disjoint_set = DisjointSet(n)
+    mst_edges = []
+    min_cost = 0
 
-# Kruskal's Algorithm
-def kruskal(n, edges):
-    heap = MinHeap()
-    heap.build_min_heap(edges)
+    # Insert edges into heap as (cost, u, v)
+    for (u, v, cost) in edge_list:
+        min_heap.insert((cost, u, v))
 
-    ds = DisjointSet(n)
-    mst = []
-    mst_cost = 0
+    count = 0
+    while count < n - 1 and min_heap.heap:
+        cost, u, v = min_heap.extract_min()
+        set_u = disjoint_set.find(u)
+        set_v = disjoint_set.find(v)
 
-    while not heap.is_empty() and len(mst) < n - 1:
-        weight, (u, v) = heap.extract_min()
-        if ds.union(u, v):
-            mst.append((u, v, weight))
-            mst_cost += weight
+        if set_u != set_v:
+            mst_edges.append((u, v, cost))
+            min_cost += cost
+            disjoint_set.union(set_u, set_v)
+            count += 1
 
-    return mst, mst_cost
+    if count != n - 1:
+        print("No spanning tree")
+        return None
+    return min_cost, mst_edges
 
-
-# Driver Code
-
-n = 5  # Number of vertices
-edge_list = [
-    (10, (0, 1)),
-    (6, (0, 2)),
-    (5, (0, 3)),
-    (15, (1, 3)),
-    (4, (2, 3)),
-    (2, (1, 2)),
-    (8, (3, 4))
+# Format: (u, v, cost)
+edges = [
+    (0, 1, 4),
+    (0, 2, 3),
+    (1, 2, 1),
+    (1, 3, 2),
+    (2, 3, 4),
+    (3, 4, 2),
+    (4, 5, 6)
 ]
 
-mst, cost = kruskal(n, edge_list)
-print("Edges in MST:")
-for u, v, w in mst:
-    print(f"{u} -- {v} == {w}")
-print("Total cost of MST:", cost)
+n = 6  # number of vertices
+min_cost, mst = kruskal(n, edges)
+print("Minimum Cost:", min_cost)
+print("MST Edges:", mst)

@@ -3,13 +3,13 @@
 #List of programs to be done : 
 Repository contains files for Design and Analysis of algorithms for MSc. semester II
 
-###{Non-Linear Sorting Methods}
+### {Non-Linear Sorting Methods}
 1. Insertion Sort
 2. Bubble Sort
 3. Merge Sort
 4. Quick Sort
 
-###{Linear Sorting Techniques}
+### {Linear Sorting Techniques}
 5. Counting Sort
 6. Radix Sort
 7. Bucket Sort
@@ -17,11 +17,11 @@ Repository contains files for Design and Analysis of algorithms for MSc. semeste
 8. Heap Sort
 9. Priority Queue
 
-###{Graph Traversal Algorithms}
+### {Graph Traversal Algorithms}
 10. Breadth First Traversal
 11. Depth First Traversal
 
-###{Min. Spanning Tree Algorithms}
+### {Min. Spanning Tree Algorithms}
 12. Prim's Algorithm
 13. Kruskal's Algorithm
 

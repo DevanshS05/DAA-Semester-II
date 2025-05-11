@@ -1,32 +1,23 @@
-class node:
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+def dfs(graph, v, visited):
+    visited[v] = 1
+    print(f"Visited: {v}")
 
-    def getNewNode(self, value):
-        return node(value)
+    for w in graph[v]:
+        if visited[w] == 0:
+            dfs(graph, w, visited) #Recursive Call
 
-    def addLeftChild(self, value):
-        if self.left is None:
-            self.left = self.getNewNode(value)
-        else:
-            print("Left child already exists!")
 
-    def addRightChild(self, value):
-        if self.right is None:
-            self.right = self.getNewNode(value)
-        else:
-            print("Right child is already present")
+#Undirected graph implemented using adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
 
-class Tree:
-    def __init__(self):
-        self.root = None
+visited = {v: 0 for v in graph}  # 0 means not visited
 
-root = node(5)
-root.addLeftChild(4)
-root.addRightChild(6)
-root.left.addLeftChild(2)
-root.left.addRightChild(4.5)
-
-print(root.left.right.value)
+print("DFS Traversal starting from vertex A:")
+dfs(graph, 'A', visited)

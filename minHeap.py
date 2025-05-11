@@ -51,6 +51,9 @@ class MinHeap:
         print(self.heap)
 
 h = MinHeap()
+
+#Below is some driver code to check the working 
+'''
 elements = [5, 3, 8, 4, 1, 2]
 print("Building heap from:", elements)
 h.build_min_heap(elements)
@@ -65,3 +68,4 @@ print("\nMinimum element:", h.get_min())
 print("\nExtracting min...")
 print("Extracted:", h.extract_min())
 h.print_heap()
+'''
