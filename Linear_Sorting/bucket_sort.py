@@ -45,8 +45,9 @@ def bucketSort(arr):
     return sortedArr
 
 def run_bucket_sort(n):
-    global steps
+    global steps, localSteps
     steps = 0
+    localSteps = 0
     lst = [random.random() for _ in range(n)]
     bucketSort(lst)
     return steps
@@ -59,14 +60,13 @@ bs_steps = [run_bucket_sort(n) for n in n_values]
 linear_n = [n for n in n_values]
 three_linear_n = [3*n for n in n_values]
 
-n_squared = [n**2 for n in n_values]
-
-plt.plot(n_values,bs_steps,label='Bucket Sort',color='purple')
-plt.plot(n_values,linear_n,label='n',color='black',linestyle='dashed')
-plt.plot(n_values,three_linear_n,label='3n',color='red',linestyle='dashed')
+plt.plot(n_values,bs_steps,label='Bucket Sort : θ(n)',color='purple')
+plt.plot(n_values,linear_n,label='n',color='green',linestyle='dashed')
+plt.plot(n_values,three_linear_n,label='3*n',color='red',linestyle='dashed')
 
 plt.xlabel("Input Size (n)")
 plt.ylabel("No of Steps")
+plt.title("Bucket Sort : Time Complexity")
 plt.grid(True)
 plt.legend()
 plt.show()

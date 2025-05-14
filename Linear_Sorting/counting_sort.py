@@ -1,5 +1,6 @@
 import random
 import matplotlib.pyplot as plt
+import math
 
 steps = 0
 
@@ -28,26 +29,32 @@ def countingSort(arr, k):
 
 def run_counting_sort(n):
     global steps
-    lst = random.sample(range(2*n))
-    countingSort(lst)
+    steps = 0
+    lst = random.sample(range(2*n), n)
+    countingSort(lst, max(lst))
     return steps
     
 #Hyper-parameters
 sampleSize = 1000
 
 n_values = [n for n in range(1,sampleSize+1)]
-bs_steps = [run_bucket_sort(n) for n in n_values]
-linear_n = [n for n in n_values]
+cs_steps = [run_counting_sort(n) for n in n_values]
+
+five_linear_n = [5*n for n in n_values]
 three_linear_n = [3*n for n in n_values]
+nlogn = [n*math.log(n) for n in n_values]
 
-n_squared = [n**2 for n in n_values]
+plt.plot(n_values,cs_steps,label='Bucket Sort : θ(n+k)',color='purple')
 
-plt.plot(n_values,bs_steps,label='Bucket Sort',color='purple')
-plt.plot(n_values,linear_n,label='n',color='black',linestyle='dashed')
-plt.plot(n_values,three_linear_n,label='3n',color='red',linestyle='dashed')
+#Counting sort is supposed to beat the lower bound of comparsion sort θ(nlogn)
+plt.plot(n_values, nlogn, label='nlogn',linestyle='dashed',color='orange')
+
+plt.plot(n_values,five_linear_n,label='5*n',color='green',linestyle='dashed')
+plt.plot(n_values,three_linear_n,label='3*n',color='red',linestyle='dashed')
 
 plt.xlabel("Input Size (n)")
 plt.ylabel("No of Steps")
+plt.title("Counting Sort : Time Complexity")
 plt.grid(True)
 plt.legend()
 plt.show()

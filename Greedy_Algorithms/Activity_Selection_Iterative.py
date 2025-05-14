@@ -16,4 +16,4 @@ n = len(activity)-1
 activity = sorted(activity, key = lambda x:x[1])
 
 selected = iterative_activity_selector(activity)
-print("Selected activities:", selected)
+print("Selected activities:", selected[1:])
